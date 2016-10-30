@@ -73,27 +73,10 @@ public class BooksFoundActivity extends FindBooksActivity {
         adapter = new BooksAdapter(title_list, author_list, image_list);
         books_found_list.setAdapter(adapter);
 
-        // update RecyclerView
-        editRecyclerView();
-
-
         BookAsyncTask asyncTask = new BookAsyncTask(this);
         asyncTask.execute(searched_book);
 
         adapter.notifyDataSetChanged();
-    }
-
-    private void editRecyclerView() {
-
-        // check is titles and posters lists exist and add title and poster
-//        if (title_list != null && author_list != null && title != null && author != null) {
-//            title_list.add(title);
-//            author_list.add(author);
-//        }
-//        if (title_list != null && author_list != null) {
-//            title_list.add(title);
-//            author_list.add(author);
-//        }
     }
 
     public void setData(ArrayList<BookItem> book_list) {
@@ -106,20 +89,21 @@ public class BooksFoundActivity extends FindBooksActivity {
         author_list.clear();
         image_list.clear();
 
-        for (BookItem item : book_list){
-            title_list.add(item.getTitle());
-            author_list.add(item.getAuthor());
-            image_list.add(item.getImage());
+        if (book_list.size() != 0) {
+            for (BookItem item : book_list){
+                title_list.add(item.getTitle());
+                author_list.add(item.getAuthor());
+                image_list.add(item.getImage());
 
-            Log.d("test", "title: " + item.getTitle());
-            Log.d("test", "author: " + item.getAuthor());
-            Log.d("test", "image: " + item.getImage());
+                Log.d("test", "title: " + item.getTitle());
+                Log.d("test", "author: " + item.getAuthor());
+                Log.d("test", "image: " + item.getImage());
+            }
+        }
+        else {
+            Log.d("test", "book_list is empty");
         }
 
-        for (String title : title_list) {
-            Log.d("test", "title in list: " + title);
-        }
-
-//        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }

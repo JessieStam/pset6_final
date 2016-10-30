@@ -1,5 +1,6 @@
 package jessie_stam.jessiestam_pset6_desktop;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,14 +90,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        BooksFoundActivity books_found = new BooksFoundActivity();
-
-        // add film title and poster to RecyclerView and resize poster
         viewHolder.myTitlesView.setText(titles.get(position));
         viewHolder.myAuthorsView.setText(authors.get(position));
 
         if (images != null) {
-            Picasso.with(books_found).load(images.get(position)).resize(100, 148).into(viewHolder.myImageView);
+            Context context = viewHolder.myImageView.getContext();
+            Picasso.with(context).load(images.get(position)).resize(100, 148).into(viewHolder.myImageView);
         }
 
         // set listener to allow for selecting item and changing color

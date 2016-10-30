@@ -21,10 +21,9 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
     private Context context;
     private BooksFoundActivity booksfoundactivity;
-//    private ArrayList<BookItem> bookitem_list;
 
     /**
-     * Constructs TitleAsyncTask
+     * Constructs BookAsyncTask
      */
     public BookAsyncTask(BooksFoundActivity activity) {
         booksfoundactivity = activity;
@@ -60,34 +59,13 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
             connection.setRequestMethod("GET");
             InputStream input_stream = connection.getInputStream();
 
-            Log.d("test", "we're in the try statement...");
-
             if (input_stream != null) {
-                //Toast.makeText(context, "Data was found", Toast.LENGTH_SHORT).show();
                 bookitem_list = processXML(input_stream);
                 Log.d("test", "data found...");
-                //return "data_found";
             }
-            else {
-                //Toast.makeText(context, "No data was found", Toast.LENGTH_SHORT).show();
-                Log.d("test", "no data found...");
-                //return "data_not_found";
-            }
-
-            Log.d("test", "we're in the try statement...");
 
         } catch (Exception e) {
             e.printStackTrace();
-
-            Log.d("test", "we're in the catch statement...");
-            Log.e("borked", "feed has borked "+ e.toString());
-        }
-
-        if (bookitem_list == null) {
-            Log.d("test", "bookitem_list is null :(");
-        }
-        else {
-            Log.d("test", "bookitem_list exists :)");
         }
 
         return bookitem_list;
@@ -98,29 +76,17 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
     protected void onPostExecute(ArrayList<BookItem> result) {
         super.onPostExecute(result);
 
-        Log.d("test", "in post execute");
+        Log.d("test", "on post execute");
 
-        if (result != null) {
-
-            Log.d("test", "iterating over result arraylist");
-            for (BookItem item : result) {
-                String title = item.getTitle();
-                Log.d("test", "result title: " + title);
-            }
+        if (result.size() != 0) {
+            Toast.makeText(context, "Data was found!", Toast.LENGTH_SHORT).show();
+            Log.d("test", "result list is not empty");
+            this.booksfoundactivity.setData(result);
         }
         else {
-            Log.d("test", "result arraylist = null");
+            Toast.makeText(context, "No data was found...", Toast.LENGTH_SHORT).show();
+            Log.d("test", "result list is empty");
         }
-
-        this.booksfoundactivity.setData(result);
-
-//        // if nothing was found, inform user
-//        if (result.equals("data_not_found")) {
-//            Toast.makeText(context, "...but no books were found for your input", Toast.LENGTH_SHORT).show();
-//        } else if (result.equals("data_found")) {
-//            // start booksFoundActivity setData function to display the data
-//            this.booksfoundactivity.setData(book_list);
-//        }
     }
 
     public ArrayList<BookItem> processXML(InputStream input_stream) throws Exception {
@@ -143,8 +109,6 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
         int event_type = parser.getEventType();
         while (event_type != XmlPullParser.END_DOCUMENT) {
-
-            Log.d("test", "we get in the parse loop");
 
             String tag_name = parser.getName();
 
@@ -255,11 +219,11 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
                 String year = item.getYear();
                 String rating = item.getRating();
 
-                Log.d("test", "title: " + title);
-                Log.d("test", "author: " + author);
-                Log.d("test", "image: " + image);
-                Log.d("test", "year: " + year);
-                Log.d("test", "rating: " + rating);
+//                Log.d("test", "title: " + title);
+//                Log.d("test", "author: " + author);
+//                Log.d("test", "image: " + image);
+//                Log.d("test", "year: " + year);
+//                Log.d("test", "rating: " + rating);
             }
         }
         else {
@@ -268,6 +232,5 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
         //this.booksfoundactivity.setData(book_list);
         return book_list;
-
     }
 }
