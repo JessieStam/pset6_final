@@ -17,13 +17,11 @@ import java.util.ArrayList;
  * Created by Jessie on 24-10-2016.
  */
 
-public class BookAsyncTask extends AsyncTask<String, Integer, String> {
+public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem>> {
 
-    Context context;
-    BooksFoundActivity booksfoundactivity;
-
-    ArrayList<BookItem> book_list = new ArrayList<>();
-    //ArrayList<String> data_list;
+    private Context context;
+    private BooksFoundActivity booksfoundactivity;
+//    private ArrayList<BookItem> bookitem_list;
 
     /**
      * Constructs TitleAsyncTask
@@ -41,23 +39,18 @@ public class BookAsyncTask extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
-        //return HttpRequestHelper.downloadFromServer(params);
+    protected ArrayList<BookItem> doInBackground(String... params) {
 
-        //InputStream input_stream = null;
-
-        Log.d("test", "do we even get here?");
+        ArrayList<BookItem> bookitem_list = null;
 
         String search_url =
                 "https://www.goodreads.com/search/index.xml?key=ZZh7kngcTINCg4tjAG0GDQ&q=";
         String user_input = params[0];
-
-        Log.d("test", "user input is: " + user_input);
         String book_search = user_input.replaceAll(" ", "+");
 
         // complete URL string and turn into URL
         String complete_URL_string = search_url + book_search;
-        URL complete_URL = null;
+        URL complete_URL;
         HttpURLConnection connection;
 
         try {
@@ -67,26 +60,74 @@ public class BookAsyncTask extends AsyncTask<String, Integer, String> {
             connection.setRequestMethod("GET");
             InputStream input_stream = connection.getInputStream();
 
+            Log.d("test", "we're in the try statement...");
+
             if (input_stream != null) {
-                Toast.makeText(context, "Data was found", Toast.LENGTH_SHORT).show();
-                processXML(input_stream);
+                //Toast.makeText(context, "Data was found", Toast.LENGTH_SHORT).show();
+                bookitem_list = processXML(input_stream);
+                Log.d("test", "data found...");
+                //return "data_found";
             }
             else {
-                Toast.makeText(context, "No data was found", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "No data was found", Toast.LENGTH_SHORT).show();
+                Log.d("test", "no data found...");
+                //return "data_not_found";
             }
 
-            processXML(input_stream);
+            Log.d("test", "we're in the try statement...");
 
         } catch (Exception e) {
             e.printStackTrace();
+
+            Log.d("test", "we're in the catch statement...");
+            Log.e("borked", "feed has borked "+ e.toString());
         }
 
-        return null;
+        if (bookitem_list == null) {
+            Log.d("test", "bookitem_list is null :(");
+        }
+        else {
+            Log.d("test", "bookitem_list exists :)");
+        }
+
+        return bookitem_list;
     }
 
-    public void processXML(InputStream input_stream) throws Exception {
+    // read the data and put in list
+    @Override
+    protected void onPostExecute(ArrayList<BookItem> result) {
+        super.onPostExecute(result);
+
+        Log.d("test", "in post execute");
+
+        if (result != null) {
+
+            Log.d("test", "iterating over result arraylist");
+            for (BookItem item : result) {
+                String title = item.getTitle();
+                Log.d("test", "result title: " + title);
+            }
+        }
+        else {
+            Log.d("test", "result arraylist = null");
+        }
+
+        this.booksfoundactivity.setData(result);
+
+//        // if nothing was found, inform user
+//        if (result.equals("data_not_found")) {
+//            Toast.makeText(context, "...but no books were found for your input", Toast.LENGTH_SHORT).show();
+//        } else if (result.equals("data_found")) {
+//            // start booksFoundActivity setData function to display the data
+//            this.booksfoundactivity.setData(book_list);
+//        }
+    }
+
+    public ArrayList<BookItem> processXML(InputStream input_stream) throws Exception {
 
         Log.d("test", "we get in the process loop");
+
+        ArrayList<BookItem> book_list = new ArrayList<>();
 
         XmlPullParserFactory factory;
         XmlPullParser parser;
@@ -199,7 +240,7 @@ public class BookAsyncTask extends AsyncTask<String, Integer, String> {
                     break;
                 default:
                     break;
-                }
+            }
             event_type = parser.next();
 
         }
@@ -225,61 +266,8 @@ public class BookAsyncTask extends AsyncTask<String, Integer, String> {
             Log.d("test", "book list is empty");
         }
 
-        this.booksfoundactivity.setData(book_list);
+        //this.booksfoundactivity.setData(book_list);
+        return book_list;
 
     }
-
-    // read the data and put in list
-//    @Override
-//    protected void onPostExecute(String readBookInfo) {
-//        super.onPostExecute(readBookInfo);
-//
-//        // if nothing was found, inform user
-//        if (book_list.size() == 0) {
-//            Toast.makeText(context, "...but no books were found for your input", Toast.LENGTH_SHORT).show();
-//        } else{
-//            // start booksFoundActivity setData function to display the data
-//            this.booksfoundactivity.setData(book_list);
-//        }
-//
-//
-////        if (readFilmInfo.length() == 0) {
-////            Toast.makeText(context, "No data was found", Toast.LENGTH_SHORT).show();
-////        } else {
-////            Toast.makeText(context, "Data was found", Toast.LENGTH_SHORT).show();
-////
-////            // create new datalist
-////            data_list = new ArrayList<>();
-////
-////            try {
-////                // create new JSONObject
-////                JSONObject response_object = new JSONObject(readFilmInfo);
-////                String title_object = response_object.getString("Title");
-////                String year_object = response_object.getString("Year");
-////                String director_object = response_object.getString("Director");
-////                String actors_object = response_object.getString("Actors");
-////                String summary_object = response_object.getString("Plot");
-////                String poster_object = response_object.getString("Poster");
-////
-////                // add to list as String
-////                data_list.add(title_object);
-////                data_list.add(year_object);
-////                data_list.add(director_object);
-////                data_list.add(actors_object);
-////                data_list.add(summary_object);
-////                data_list.add(poster_object);
-////
-////            } catch (Exception e) {
-////                e.printStackTrace();
-////            }
-////
-////            // if film is not found, let user know
-////            if (data_list.size() == 0) {
-////                Toast.makeText(context, "but your film was not...", Toast.LENGTH_SHORT).show();
-////            }
-////
-////            // start Second Activity's setData function to display the data
-////            this.secondActivity.setData(data_list);
-////        }
-//    }
 }
