@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">jessiestam-pset6_desktop</string>
+    <string name="app_name">TBR Jar</string>
     <string name="enter_email">Enter your e-mail</string>
     <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm your password</string>
@@ -7,11 +7,12 @@
     <string name="auth_failed">Something went wrong there...</string>
     <string name="sign_me_out_button">Sign me out</string>
 
-    <string name="emailpassword_status_fmt">Email User: %s</string>
+    <string name="emailpassword_status_fmt">Logged in on: %s</string>
     <string name="emailpassword_title_text">Email and Password</string>
 
-    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_status_fmt">Your magical code is: %s</string>
     <string name="firebase_user_management">Firebase User Management</string>
 
     <string name="signed_out">Signed Out</string>
+    <string name="book_add_instr">Click on a book to get more information or add it to one of your lists.</string>
 </resources>

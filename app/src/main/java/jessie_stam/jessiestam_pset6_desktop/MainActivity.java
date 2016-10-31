@@ -1,18 +1,48 @@
 package jessie_stam.jessiestam_pset6_desktop;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
+    MenuHelper menu_helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Welcome to the");
+        setSupportActionBar(toolbar);
+
+        menu_helper = new MenuHelper();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu_item) {
+
+        String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
+        Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
+
+        return super.onOptionsItemSelected(menu_item);
+    }
+
 
     public void signUp(View view) {
 
@@ -27,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         signUpUser.putExtra("pass_confirm", pass_confirm);
 
         startActivity(signUpUser);
-        finish();
     }
 
     public void logIn(View view) {
@@ -43,6 +72,5 @@ public class MainActivity extends AppCompatActivity {
         logInUser.putExtra("pass_confirm", pass_confirm);
 
         startActivity(logInUser);
-        finish();
     }
 }

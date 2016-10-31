@@ -1,10 +1,13 @@
 package jessie_stam.jessiestam_pset6_desktop;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +39,9 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     EditText password_field;
     EditText confirm_field;
 
+    private Toolbar toolbar;
+    MenuHelper menu_helper;
+
     private static final String TAG = "EmailPassword";
 
 
@@ -47,6 +53,11 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emailpassword);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        menu_helper = new MenuHelper();
 
         Bundle extras = getIntent().getExtras();
 
@@ -65,7 +76,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
 
         findViewById(R.id.sign_up_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.continue_button).setOnClickListener(this);
+        //findViewById(R.id.continue_button).setOnClickListener(this);
 
         title_text.setText(title);
         instr_text.setText(instr);
@@ -103,6 +114,22 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                 // [END_EXCLUDE]
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu_item) {
+
+        String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
+        Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
+
+        return super.onOptionsItemSelected(menu_item);
     }
 
     @Override
@@ -222,7 +249,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
             if (singup_login != null) {
                 findViewById(R.id.sign_up_button).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-                findViewById(R.id.continue_button).setVisibility(View.VISIBLE);
+                //findViewById(R.id.continue_button).setVisibility(View.VISIBLE);
                 email_field.setVisibility(View.GONE);
                 password_field.setVisibility(View.GONE);
 
@@ -237,7 +264,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
 
             findViewById(R.id.sign_up_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            findViewById(R.id.continue_button).setVisibility(View.GONE);
+            //findViewById(R.id.continue_button).setVisibility(View.GONE);
             email_field.setVisibility(View.VISIBLE);
             password_field.setVisibility(View.VISIBLE);
 
@@ -250,6 +277,9 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int i = v.getId();
+        String new_instr = "Logged in succesfully! Click the search button to look for " +
+                "books. Click the list button to access your lists.";
+
         if (i == R.id.sign_up_button) {
 
             String email = email_field.getText().toString();
@@ -266,23 +296,29 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                 }
                 else {
                     createAccount(email, password);
+
+                    instr_text.setText(new_instr);
                 }
 
             } else if (title.equals("Logging in")) {
                 signIn(email, password);
+
+                instr_text.setText(new_instr);
             }
         } else if (i == R.id.sign_out_button) {
             signOut();
+
+            instr_text.setText(instr);
         }
-        else if (i == R.id.continue_button) {
-
-            Intent startApp = new Intent(this, FindBooksActivity.class);
-
-            startActivity(startApp);
-
-            finish();
-
-        }
+//        else if (i == R.id.continue_button) {
+//
+//            Intent startApp = new Intent(this, FindBooksActivity.class);
+//
+//            startActivity(startApp);
+//
+//            finish();
+//
+//        }
     }
 
 }

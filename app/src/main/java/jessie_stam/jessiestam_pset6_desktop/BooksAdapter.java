@@ -1,7 +1,9 @@
 package jessie_stam.jessiestam_pset6_desktop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     private ArrayList<String> titles;
     private ArrayList<String> authors;
     private ArrayList<String> images;
+    BooksFoundActivity booksfound;
 
     /**
      * This function constructs the FilmAdapter
@@ -33,14 +36,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         this.titles = titles;
         this.authors = authors;
         this.images = images;
-
-//        if (books_list != null) {
-//            for (BookItem item : books_list) {
-//                this.titles.add(item.getTitle());
-//                this.authors.add(item.getAuthor());
-//                this.images.add(item.getImage());
-//            }
-//        }
     }
 
     /**
@@ -60,29 +55,32 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         }
     }
 
-//    // set onClickListener to RecyclerView
-//    View.OnClickListener listener = new View.OnClickListener() {
-//
-//        // when item is clicked, change color
-//        @Override
-//        public void onClick(View view) {
-//            // if item is selected, change color to turquoise
-//            if (currentColor.equals(unfinished) || currentColor == null) {
-//                view.setBackgroundColor(Color.parseColor("#d4f7f4"));
-//                currentColor = finished;
-//            }
-//            // if item is not selected, change color back to white
-//            else if (currentColor.equals(finished)) {
-//                view.setBackgroundColor(Color.WHITE);
-//                currentColor = unfinished;
-//            }
-//        }
-//    };
+    // set onClickListener to RecyclerView
+    View.OnClickListener listener = new View.OnClickListener() {
+
+        // when item is clicked, move to bookinfo activity
+        @Override
+        public void onClick(View view) {
+
+            booksfound = new BooksFoundActivity();
+
+            TextView titleview = (TextView) view.findViewById(R.id.titles_row);
+            String title = titleview.getText().toString();
+
+            Log.d("test", "title = " + title);
+
+            Intent bookDetails = new Intent(booksfound, BookDetailsActivity.class);
+            bookDetails.putExtra("clicked_book", title);
+
+            booksfound.startActivity(bookDetails);
+
+        }
+    };
 
     @Override
     public BooksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_bookrow, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookrow, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -99,7 +97,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         }
 
         // set listener to allow for selecting item and changing color
-        //viewHolder.itemView.setOnClickListener(listener);
+        viewHolder.itemView.setOnClickListener(listener);
     }
 
     @Override

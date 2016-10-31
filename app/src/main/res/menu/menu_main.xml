@@ -1,0 +1,48 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/apk/tools"
+    tools:context="jessie_stam.jessiestam_pset6_desktop.MainActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:orderInCategory="200"
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_search_white_24dp"/>
+
+    <item
+        android:id="@+id/action_lists"
+        android:icon="@mipmap/ic_library_books_white_24dp"
+        app:showAsAction="always"
+        android:title="List"
+        android:orderInCategory="200">
+        <menu>
+            <item
+                android:id="@+id/tbrList"
+                android:title="TBR Jar" />
+            <item
+                android:id="@+id/readList"
+                android:title="Finished reads" />
+            <item
+                android:id="@+id/favList"
+                android:title="Favorites" />
+            <item
+                android:id="@+id/currentList"
+                android:title="Reading now" />
+        </menu>
+    </item>/>
+
+    <item
+        android:id="@+id/action_account"
+        android:orderInCategory="200"
+        android:title="Account"
+        android:icon="@mipmap/ic_person_white_24dp"
+        app:showAsAction="always"/>
+
+</menu>
