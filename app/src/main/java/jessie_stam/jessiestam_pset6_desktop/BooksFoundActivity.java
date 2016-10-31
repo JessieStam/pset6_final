@@ -29,19 +29,18 @@ public class BooksFoundActivity extends FindBooksActivity {
     LinearLayoutManager manager;
     BooksAdapter adapter;
 
-//    String title;
-//    String author;
     String searched_book;
     ArrayList<String> title_list;
     ArrayList<String> author_list;
     ArrayList<String> image_list;
 
-    //ArrayList<BookItem> bookitem_list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booksfound);
+
+        searched_book = "test";
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,40 +55,31 @@ public class BooksFoundActivity extends FindBooksActivity {
         author_list = new ArrayList<>();
         image_list = new ArrayList<>();
 
-//        title_list.add("testbook title");
-//        author_list.add("testbook author");
-//        image_list.add("https://images.gr-assets.com/books/1454428541s/9118135.jpg");
-
-//        if (savedInstanceState == null) {
-//            // create new list
-//            bookitem_list = new ArrayList<>();
-//        }
-//        // if savedInstanceState is not empty, restore lists
-//        else {
-//            // restore titles and posters lists
-//            // bookitem_list = savedInstanceState.getArrayList("booklist");
-//        }
-
-        // get extras from MainActivity
+        // get extras from FindBooksActivity
         Bundle extras = getIntent().getExtras();
 
         // if extras exist, update title and poster string and titles and posters lists
         if (extras != null) {
             searched_book = extras.getString("searched_book");
-
-            Log.d("test", "user input in booksfound is: " + searched_book);
         }
+
+        Log.d("test", "searched book is: " + searched_book);
 
         // use a linear layout manager on RecyclerView
         manager = new LinearLayoutManager(this);
         books_found_list.setLayoutManager(manager);
 
         // create new BooksAdapter object and set to RecyclerView
-        adapter = new BooksAdapter(title_list, author_list, image_list);
+        adapter = new BooksAdapter(this, title_list, author_list, image_list);
         books_found_list.setAdapter(adapter);
 
-        BookAsyncTask asyncTask = new BookAsyncTask(this);
-        asyncTask.execute(searched_book);
+        if (searched_book != null) {
+            BookAsyncTask asyncTask = new BookAsyncTask(this);
+            asyncTask.execute(searched_book);
+        }
+        else {
+            finish();
+        }
 
         adapter.notifyDataSetChanged();
     }

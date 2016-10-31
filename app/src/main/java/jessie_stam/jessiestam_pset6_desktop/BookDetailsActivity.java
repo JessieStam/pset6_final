@@ -2,6 +2,7 @@ package jessie_stam.jessiestam_pset6_desktop;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ public class BookDetailsActivity extends BooksFoundActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booksfound);
+        setContentView(R.layout.activity_bookdetails);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,6 +36,8 @@ public class BookDetailsActivity extends BooksFoundActivity {
         // if extras exist, update title and poster string and titles and posters lists
         if (extras != null) {
             clicked_book = extras.getString("clicked_book");
+
+            Log.d("test", "in bookdetail, clicked book = " + clicked_book);
 
             title = (TextView) findViewById(R.id.app_detailtitle);
             title.setText(clicked_book);

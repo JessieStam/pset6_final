@@ -20,6 +20,7 @@
         <activity android:name=".EmailPasswordActivity"/>
         <activity android:name=".FindBooksActivity"/>
         <activity android:name=".BooksFoundActivity"/>
+        <activity android:name=".BookDetailsActivity"/>
 
     </application>
 

@@ -23,16 +23,18 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
 
     //private ArrayList<BookItem> books_list;
 
+    private Context context;
     private ArrayList<String> titles;
     private ArrayList<String> authors;
     private ArrayList<String> images;
-    BooksFoundActivity booksfound;
+    private String title;
 
     /**
      * This function constructs the FilmAdapter
      */
-    public BooksAdapter(ArrayList<String> titles, ArrayList<String> authors, ArrayList<String> images) {
+    public BooksAdapter(Context context, ArrayList<String> titles, ArrayList<String> authors, ArrayList<String> images) {
 
+        this.context = context;
         this.titles = titles;
         this.authors = authors;
         this.images = images;
@@ -52,6 +54,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
             myTitlesView = (TextView) itemView.findViewById(R.id.titles_row);
             myAuthorsView = (TextView) itemView.findViewById(R.id.authors_row);
             myImageView = (ImageView) itemView.findViewById(R.id.image_row);
+
+            title = "fuck bitches";
         }
     }
 
@@ -62,18 +66,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         @Override
         public void onClick(View view) {
 
-            booksfound = new BooksFoundActivity();
-
             TextView titleview = (TextView) view.findViewById(R.id.titles_row);
-            String title = titleview.getText().toString();
+            title = titleview.getText().toString();
 
             Log.d("test", "title = " + title);
 
-            Intent bookDetails = new Intent(booksfound, BookDetailsActivity.class);
+            Intent bookDetails = new Intent(context, BookDetailsActivity.class);
             bookDetails.putExtra("clicked_book", title);
+            context.startActivity(bookDetails);
 
-            booksfound.startActivity(bookDetails);
-
+            ((BooksFoundActivity)context).finish();
         }
     };
 
@@ -104,4 +106,5 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     public int getItemCount() {
         return titles.size();
     }
+
 }
