@@ -3,7 +3,6 @@ package jessie_stam.jessiestam_pset6_desktop.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,14 @@ import jessie_stam.jessiestam_pset6_desktop.R;
 
 
 /**
- * Created by Jessie on 27-10-2016.
+ * TBR Jar - BooksAdapter
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * A ListView adapter that places titles, authors and images into a ListView
  */
-
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
-
-    //private ArrayList<BookItem> books_list;
 
     private Context context;
     private ArrayList<String> titles;
@@ -33,7 +34,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     private String title;
 
     /**
-     * This function constructs the FilmAdapter
+     * This function constructs the BookAdapter
      */
     public BooksAdapter(Context context, ArrayList<String> titles, ArrayList<String> authors, ArrayList<String> images) {
 
@@ -44,7 +45,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     }
 
     /**
-     * Construct ViewHolder to display title and author in
+     * Construct ViewHolder to display title, author and image
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,16 +68,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
         @Override
         public void onClick(View view) {
 
+            // get title of clicked item
             TextView titleview = (TextView) view.findViewById(R.id.titles_row);
             title = titleview.getText().toString();
 
-            Log.d("test", "title = " + title);
-
+            // start new activity, add title
             Intent bookDetails = new Intent(context, BookDetailsActivity.class);
             bookDetails.putExtra("clicked_book", title);
             context.startActivity(bookDetails);
 
-//            ((BooksFoundActivity)context).finish();
         }
     };
 
@@ -91,6 +91,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
+        // add data to the RecyclerView
         viewHolder.myTitlesView.setText(titles.get(position));
         viewHolder.myAuthorsView.setText(authors.get(position));
 
@@ -99,7 +100,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
             Picasso.with(context).load(images.get(position)).resize(100, 148).into(viewHolder.myImageView);
         }
 
-        // set listener to allow for selecting item and changing color
+        // set onclick listener, so we acn move on to BookDetailsActivity later
         viewHolder.itemView.setOnClickListener(listener);
     }
 

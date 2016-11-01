@@ -13,6 +13,15 @@ import android.widget.Toast;
 import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
+
+/**
+ * TBR Jar - MainActivity
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Instructs the user on how to use the app, lets the user choose between logging in or signing up.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -23,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // construct the toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Welcome to the");
         setSupportActionBar(toolbar);
@@ -40,13 +50,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menu_item) {
 
+        // display toast for clicked toolbar item
         String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
         Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(menu_item);
     }
 
-
+    /**
+     * Moves to EmailPasswordActivity, lets the user sign up
+     */
     public void signUp(View view) {
 
         String title = "Signing up";
@@ -62,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(signUpUser);
     }
 
+    /**
+     * Moves to EmailPasswordActivity, lets the user log in
+     */
     public void logIn(View view) {
 
         String title = "Logging in";

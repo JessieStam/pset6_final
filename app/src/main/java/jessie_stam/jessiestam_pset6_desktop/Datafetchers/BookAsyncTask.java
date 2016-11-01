@@ -18,9 +18,14 @@ import jessie_stam.jessiestam_pset6_desktop.Helpers.BookManager;
 import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 
 /**
- * Created by Jessie on 24-10-2016.
+ * TBR Jar - BooksAsyncTask
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Takes user input (from BooksFoundActivity) and uses the GoodReads Api to fetch data for that
+ * specific book/author/isbn number. Calls BooksFoundActivity setData function to display data.
  */
-
 public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem>> {
 
     private Context context;
@@ -39,7 +44,6 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
     // let user know data is being downloaded
     @Override
     protected void onPreExecute() {
-        // inform user
         Toast.makeText(context, "Getting data from server", Toast.LENGTH_SHORT).show();
     }
 
@@ -48,6 +52,7 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
         ArrayList<BookItem> bookitem_list = null;
 
+        // make string and replace spaces for pluses
         String search_url =
                 "https://www.goodreads.com/search/index.xml?key=ZZh7kngcTINCg4tjAG0GDQ&q=";
         String user_input = params[0];
@@ -59,15 +64,16 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
         HttpURLConnection connection;
 
         try {
+            // try to make connection
             complete_URL = new URL(complete_URL_string);
 
             connection = (HttpURLConnection) complete_URL.openConnection();
             connection.setRequestMethod("GET");
             InputStream input_stream = connection.getInputStream();
 
+            // if inputstream exists, process xml file and save in bookitem_list
             if (input_stream != null) {
                 bookitem_list = processXML(input_stream);
-                Log.d("test", "data found...");
             }
 
         } catch (Exception e) {
@@ -77,30 +83,28 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
         return bookitem_list;
     }
 
-    // read the data and put in list
+    // if datalist is filled, setData in BooksFoundActivity
     @Override
     protected void onPostExecute(ArrayList<BookItem> result) {
         super.onPostExecute(result);
 
-        Log.d("test", "on post execute");
-
         if (result.size() != 0) {
             Toast.makeText(context, "Data was found!", Toast.LENGTH_SHORT).show();
-            Log.d("test", "result list is not empty");
             this.booksfoundactivity.setData(result);
         }
         else {
             Toast.makeText(context, "No data was found...", Toast.LENGTH_SHORT).show();
-            Log.d("test", "result list is empty");
         }
     }
 
+    /**
+     * Process xml file and add data to BookItem
+     */
     public ArrayList<BookItem> processXML(InputStream input_stream) throws Exception {
-
-        Log.d("test", "we get in the process loop");
 
         ArrayList<BookItem> book_list = new ArrayList<>();
 
+        // construct parser and factory, add inputstream
         XmlPullParserFactory factory;
         XmlPullParser parser;
 
@@ -118,18 +122,10 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
             String tag_name = parser.getName();
 
-            if (tag_name != null) {
-                Log.d("test", "tag name is: " + tag_name);
-            }
-            else {
-                Log.d("test", "tag name is null");
-            }
-
             switch (event_type) {
                 case XmlPullParser.START_TAG:
 
-                    Log.d("test", "case is start tag");
-
+                    // if tag is work, create BookItem in advance
                     if (tag_name.equalsIgnoreCase("work")) {
                         book_item = new BookItem();
                     }
@@ -137,19 +133,14 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
                 case XmlPullParser.TEXT:
 
-                    Log.d("test", "case is text");
-
+                    // when text is found, save it temporarily to maybe put in the BookItem
                     text = parser.getText();
                     break;
 
                 case XmlPullParser.END_TAG:
 
-                    Log.d("test", "case is end tag");
-
+                    // if tag is title, add to
                     if (tag_name.equalsIgnoreCase("title")) {
-
-                        Log.d("test", "tag equals title");
-
                         if (text != null) {
                             book_item.setTitle(text);
                         }

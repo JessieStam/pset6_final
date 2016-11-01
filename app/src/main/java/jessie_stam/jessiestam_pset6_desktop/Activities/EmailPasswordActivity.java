@@ -25,9 +25,13 @@ import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
- * Created by Jessie on 13-10-2016.
+ * TBR Jar - EmailPasswordActivity
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Uses Google Firebase to let users create accounts and log in on those accounts.
  */
-
 public class EmailPasswordActivity extends MainActivity implements View.OnClickListener {
 
     String title;
@@ -49,10 +53,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     BookManager manager;
 
     private static final String TAG = "EmailPassword";
-
-
     private FirebaseAuth mAuth;
-
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -60,13 +61,15 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emailpassword);
 
+        // construct toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         menu_helper = new MenuHelper();
 
+        // construct helper
         manager = BookManager.getOurInstance();
 
+        // get extras from MainActivity
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -82,10 +85,11 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
 
         Button signup_login_button = (Button) findViewById(R.id.sign_up_button);
 
+        // set onclick listener to buttons
         findViewById(R.id.sign_up_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.continue_button).setOnClickListener(this);
 
+        // edit text according to log in or sign up
         title_text.setText(title);
         instr_text.setText(instr);
 
@@ -93,6 +97,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         password_field = (EditText) findViewById(R.id.password_input);
         confirm_field = (EditText) findViewById(R.id.password_confirm_input);
 
+        // display edittext for password confirmation in case of signing up
         if (confirm_pass != null) {
             if (confirm_pass.equals("visible")) {
                 confirm_field.setVisibility(View.VISIBLE);
@@ -103,7 +108,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
             }
         }
 
-
+        // construct firebase
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -117,9 +122,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // [START_EXCLUDE]
                 updateUI(user);
-                // [END_EXCLUDE]
             }
         };
     }
@@ -134,6 +137,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem menu_item) {
 
+        // display toast for clicked toolbar item
         String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
         Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
 
@@ -154,13 +158,14 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         }
     }
 
+    /**
+     * Creates firebase account
+     */
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
         }
-
-        //showProgressDialog();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -175,24 +180,19 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                             Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
 
+    /**
+     * Signs user in
+     */
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
             return;
         }
 
-        //showProgressDialog();
-
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -207,23 +207,21 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                             Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            mStatusTextView.setText(R.string.auth_failed);
-//                        }
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
+    /**
+     * Sign user out
+     */
     private void signOut() {
         mAuth.signOut();
         updateUI(null);
     }
 
+    /**
+     * Display error if e-mail or password filled is not filled in
+     */
     private boolean validateForm() {
         boolean valid = true;
 
@@ -246,8 +244,12 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         return valid;
     }
 
+    /**
+     * Change page information according to if user is logging in or signing up
+     */
     private void updateUI(FirebaseUser user) {
-        //hideProgressDialog();
+
+        // if user is logged in, display e-mail and firebase code
         if (user != null) {
             status.setText(getString(R.string.emailpassword_status_fmt, user.getEmail()));
             detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
@@ -257,7 +259,6 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
             if (singup_login != null) {
                 findViewById(R.id.sign_up_button).setVisibility(View.GONE);
                 findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-                //findViewById(R.id.continue_button).setVisibility(View.VISIBLE);
                 email_field.setVisibility(View.GONE);
                 password_field.setVisibility(View.GONE);
 
@@ -266,13 +267,15 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                 }
             }
 
-        } else {
+        }
+        // if user is logged out, display signed out message
+        else {
             status.setText(R.string.signed_out);
             detail.setText(null);
 
             findViewById(R.id.sign_up_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            //findViewById(R.id.continue_button).setVisibility(View.GONE);
+
             email_field.setVisibility(View.VISIBLE);
             password_field.setVisibility(View.VISIBLE);
 
@@ -284,6 +287,10 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         }
     }
 
+    /**
+     * When button is clicked, log in/sign up user. Check for password correctness and create User
+     * object for e-mail.
+     */
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -306,9 +313,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                 }
                 else {
                     createAccount(email, password);
-
                     instr_text.setText(new_instr);
-
                     manager.create_user(email);
                 }
 
@@ -320,9 +325,7 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
 
         } else if (i == R.id.sign_out_button) {
             manager.logout_user();
-
             signOut();
-
             instr_text.setText(instr);
         }
     }

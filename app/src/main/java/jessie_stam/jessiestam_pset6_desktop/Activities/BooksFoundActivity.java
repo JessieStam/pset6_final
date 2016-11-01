@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,16 +11,21 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import jessie_stam.jessiestam_pset6_desktop.Datafetchers.BookAsyncTask;
-import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.Adapters.BooksAdapter;
+import jessie_stam.jessiestam_pset6_desktop.Datafetchers.BookAsyncTask;
 import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
+import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
- * Created by Jessie on 24-10-2016.
+ * TBR Jar - BooksFoundActivity
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Gives user input from FindBooksActivity to BooksAsyncTask, then displays returned results in
+ * ListView. When items are clicked, moves to BookDetailsActivity.
  */
-
 public class BooksFoundActivity extends FindBooksActivity {
 
     private Toolbar toolbar;
@@ -41,6 +45,7 @@ public class BooksFoundActivity extends FindBooksActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booksfound);
 
+        // construct toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,6 +53,7 @@ public class BooksFoundActivity extends FindBooksActivity {
 
         books_found_list = (RecyclerView) findViewById(R.id.booksfound_list);
 
+        // if savedInstanceState is null, construct lists, if not fetch data from onRestore
         if (savedInstanceState == null) {
             title_list = new ArrayList<>();
             author_list = new ArrayList<>();
@@ -59,13 +65,12 @@ public class BooksFoundActivity extends FindBooksActivity {
             image_list = savedInstanceState.getStringArrayList("image_list");
 
             searched_book = savedInstanceState.getString("searched_book");
-            Log.d("test", "searched_book from savedInstance: " + searched_book);
         }
 
         // get extras from FindBooksActivity
         Bundle extras = getIntent().getExtras();
 
-        // if extras exist, update title and poster string and titles and posters lists
+        // if extras exist, update searched book
         if (extras != null) {
             searched_book = extras.getString("searched_book");
         }
@@ -74,12 +79,11 @@ public class BooksFoundActivity extends FindBooksActivity {
         manager = new LinearLayoutManager(this);
         books_found_list.setLayoutManager(manager);
 
-        Log.d("test", "searched book is: " + searched_book);
-
         // create new BooksAdapter object and set to RecyclerView
         adapter = new BooksAdapter(this, title_list, author_list, image_list);
         books_found_list.setAdapter(adapter);
 
+        // fetch data for user input
         if (searched_book != null) {
             BookAsyncTask asyncTask = new BookAsyncTask(this);
             asyncTask.execute(searched_book);
@@ -98,18 +102,19 @@ public class BooksFoundActivity extends FindBooksActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menu_item) {
 
+        // display toast for clicked toolbar item
         String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
         Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(menu_item);
     }
 
+    /**
+     * Called from BookAsynctask, puts data into the lists so RecyclerView can display them
+     */
     public void setData(ArrayList<BookItem> book_list) {
 
-        Log.d("test", "setData, iterate over book_list");
-
-        //bookitem_list = book_list;
-
+        // remove old data
         title_list.clear();
         author_list.clear();
         image_list.clear();
@@ -119,14 +124,7 @@ public class BooksFoundActivity extends FindBooksActivity {
                 title_list.add(item.getTitle());
                 author_list.add(item.getAuthor());
                 image_list.add(item.getImage());
-
-                Log.d("test", "title: " + item.getTitle());
-                Log.d("test", "author: " + item.getAuthor());
-                Log.d("test", "image: " + item.getImage());
             }
-        }
-        else {
-            Log.d("test", "book_list is empty");
         }
 
         adapter.notifyDataSetChanged();
@@ -141,7 +139,6 @@ public class BooksFoundActivity extends FindBooksActivity {
         outState.putStringArrayList("author_list", author_list);
         outState.putStringArrayList("image_list", image_list);
 
-//        outState.putString("searched_book", searched_book);
     }
 
     @Override
@@ -153,6 +150,5 @@ public class BooksFoundActivity extends FindBooksActivity {
         author_list = savedInstanceState.getStringArrayList("author_list");
         image_list = savedInstanceState.getStringArrayList("image_list");
 
-//        searched_book = savedInstanceState.getString("searched_book");
     }
 }

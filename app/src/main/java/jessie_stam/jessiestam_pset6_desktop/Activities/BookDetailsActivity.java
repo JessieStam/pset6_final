@@ -22,7 +22,13 @@ import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
- * Created by Jessie on 31-10-2016.
+ * TBR Jar - BookDetailsActivity
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Displays details for clicked RecyclerView item in BooksFoundActivity. Also allows the user to add
+ * the book to one of four lists: tbr, favorites, currently reading and finished.
  */
 public class BookDetailsActivity extends BooksFoundActivity implements View.OnClickListener {
 
@@ -64,21 +70,20 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
         findViewById(R.id.fin_button).setOnClickListener(this);
         findViewById(R.id.reading_button).setOnClickListener(this);
 
+        // construct toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         menu_helper = new MenuHelper();
 
+        // construct helper
         manager = BookManager.getOurInstance();
 
-        // get extras from MainActivity
+        // get extras from BooksFoundActivity
         Bundle extras = getIntent().getExtras();
 
-        // if extras exist, update title and poster string and titles and posters lists
         if (extras != null) {
             clicked_book = extras.getString("clicked_book");
-
-            Log.d("test", "in bookdetail, clicked book = " + clicked_book);
 
             // get helper class to fill in blanks
             clicked_item = manager.getItemByTitle(clicked_book);
@@ -114,25 +119,34 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
     @Override
     public boolean onOptionsItemSelected(MenuItem menu_item) {
 
+        // display toast for clicked toolbar item
         String clicked_item = menu_helper.getClickedMenuItem(menu_item, this);
         Toast.makeText(this, clicked_item, Toast.LENGTH_SHORT).show();
 
         return super.onOptionsItemSelected(menu_item);
     }
 
+    /**
+     * Set onClick listener for buttons
+     */
     @Override
     public void onClick(View v) {
         int i = v.getId();
 
+        // check which button is pressed
         switch (i) {
+
+            // when optionsbutton is clicked, display buttons for each possible list
             case R.id.openoptions_button:
                 open_options.setText("Add book to...");
                 Log.d("test", "clicked openoptions button");
+
+                // make the lists visible
                 changeVisibility();
                 break;
 
+            // check if book is not already in tbr list, if not, add
             case R.id.tbr_button:
-
                 int j = 0;
                 ArrayList<BookItem> current_list = manager.getTbr_jar();
 
@@ -148,8 +162,9 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
                     manager.add_to_tbr(clicked_item);
                     Toast.makeText(this, "Added to your TBR Jar!", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
+
+            // check if book is not already in favorites list, if not, add
             case R.id.fav_button:
 
                 int k = 0;
@@ -167,8 +182,9 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
                     manager.add_to_favorites(clicked_item);
                     Toast.makeText(this, "Added to your favorites!", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
+
+            // check if book is not already in finished list, if not, add
             case R.id.fin_button:
 
                 int l = 0;
@@ -188,6 +204,8 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
                 }
 
                 break;
+
+            // check if book is not already in currently reading list, if not, add
             case R.id.reading_button:
 
                 int m = 0;
@@ -205,11 +223,13 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
                     manager.add_to_reading(clicked_item);
                     Toast.makeText(this, "Added to your current reads!", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
         }
     }
 
+    /**
+     * Change the visibility of the add-to-list buttons
+     */
     public void changeVisibility() {
 
         if (tbr_button.getVisibility() == View.VISIBLE) {
@@ -224,6 +244,5 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
             fin_button.setVisibility(View.VISIBLE);
             reading_button.setVisibility(View.VISIBLE);
         }
-
     }
 }
