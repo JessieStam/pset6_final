@@ -1,4 +1,4 @@
-package jessie_stam.jessiestam_pset6_desktop;
+package jessie_stam.jessiestam_pset6_desktop.Items;
 
 /**
  * Created by Jessie on 29-10-2016.
@@ -12,6 +12,7 @@ public class BookItem {
     private String image;
     private String year;
     private String rating;
+    private String summary;
 
     // constructor
     //public BookItem(String new_string) { title = new_string; }
@@ -35,4 +36,8 @@ public class BookItem {
     // methods for rating
     public String getRating() { return rating; }
     public void setRating(String new_rating) { rating = new_rating; }
+
+    public String getSummary() { return summary; }
+    public void setSummary(String new_summary) { summary = new_summary; }
+
 }

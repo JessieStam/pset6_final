@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="#459462"
     android:elevation="5dp"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
     
     <TextView
         android:layout_width="match_parent"

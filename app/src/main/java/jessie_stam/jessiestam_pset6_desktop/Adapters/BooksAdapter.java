@@ -1,4 +1,4 @@
-package jessie_stam.jessiestam_pset6_desktop;
+package jessie_stam.jessiestam_pset6_desktop.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import jessie_stam.jessiestam_pset6_desktop.Activities.BookDetailsActivity;
+import jessie_stam.jessiestam_pset6_desktop.R;
 
 
 /**
@@ -54,8 +57,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
             myTitlesView = (TextView) itemView.findViewById(R.id.titles_row);
             myAuthorsView = (TextView) itemView.findViewById(R.id.authors_row);
             myImageView = (ImageView) itemView.findViewById(R.id.image_row);
-
-            title = "fuck bitches";
         }
     }
 
@@ -75,7 +76,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder>{
             bookDetails.putExtra("clicked_book", title);
             context.startActivity(bookDetails);
 
-            ((BooksFoundActivity)context).finish();
+//            ((BooksFoundActivity)context).finish();
         }
     };
 

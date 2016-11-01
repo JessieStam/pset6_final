@@ -1,4 +1,4 @@
-package jessie_stam.jessiestam_pset6_desktop;
+package jessie_stam.jessiestam_pset6_desktop.Datafetchers;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,6 +13,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import jessie_stam.jessiestam_pset6_desktop.Activities.BooksFoundActivity;
+import jessie_stam.jessiestam_pset6_desktop.Helpers.BookManager;
+import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
+
 /**
  * Created by Jessie on 24-10-2016.
  */
@@ -21,6 +25,7 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
     private Context context;
     private BooksFoundActivity booksfoundactivity;
+    private BookManager manager;
 
     /**
      * Constructs BookAsyncTask
@@ -28,6 +33,7 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
     public BookAsyncTask(BooksFoundActivity activity) {
         booksfoundactivity = activity;
         context = this.booksfoundactivity.getApplicationContext();
+        manager = BookManager.getOurInstance();
     }
 
     // let user know data is being downloaded
@@ -199,6 +205,10 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
                         Log.d("test", "tag equals work");
 
+                        book_item.setSummary("No summary yet.");
+
+                        manager.addBookToDisplayList(book_item);
+
                         book_list.add(book_item);
                     }
                     break;
@@ -230,7 +240,6 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
             Log.d("test", "book list is empty");
         }
 
-        //this.booksfoundactivity.setData(book_list);
         return book_list;
     }
 }

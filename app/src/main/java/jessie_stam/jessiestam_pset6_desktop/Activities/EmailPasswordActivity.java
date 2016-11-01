@@ -1,4 +1,4 @@
-package jessie_stam.jessiestam_pset6_desktop;
+package jessie_stam.jessiestam_pset6_desktop.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import jessie_stam.jessiestam_pset6_desktop.Helpers.BookManager;
+import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
+import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
  * Created by Jessie on 13-10-2016.
@@ -42,6 +46,8 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
     private Toolbar toolbar;
     MenuHelper menu_helper;
 
+    BookManager manager;
+
     private static final String TAG = "EmailPassword";
 
 
@@ -58,6 +64,8 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
         setSupportActionBar(toolbar);
 
         menu_helper = new MenuHelper();
+
+        manager = BookManager.getOurInstance();
 
         Bundle extras = getIntent().getExtras();
 
@@ -298,27 +306,22 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
                     createAccount(email, password);
 
                     instr_text.setText(new_instr);
+
+                    manager.create_user(email);
                 }
 
             } else if (title.equals("Logging in")) {
+                manager.create_user(email);
                 signIn(email, password);
-
                 instr_text.setText(new_instr);
             }
+
         } else if (i == R.id.sign_out_button) {
+            manager.logout_user();
+
             signOut();
 
             instr_text.setText(instr);
         }
-//        else if (i == R.id.continue_button) {
-//
-//            Intent startApp = new Intent(this, FindBooksActivity.class);
-//
-//            startActivity(startApp);
-//
-//            finish();
-//
-//        }
     }
-
 }

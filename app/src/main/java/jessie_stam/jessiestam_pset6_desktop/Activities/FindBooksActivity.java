@@ -1,4 +1,4 @@
-package jessie_stam.jessiestam_pset6_desktop;
+package jessie_stam.jessiestam_pset6_desktop.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
+import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
  * Created by Jessie on 15-10-2016.
@@ -26,6 +29,8 @@ public class FindBooksActivity extends EmailPasswordActivity {
     private Toolbar toolbar;
     MenuHelper menu_helper;
 
+    //BookManager manager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,9 @@ public class FindBooksActivity extends EmailPasswordActivity {
         setSupportActionBar(toolbar);
 
         menu_helper = new MenuHelper();
+
+        //manager = BookManager.getOurInstance();
+        //manager.clearDisplayList();
 
     }
 
