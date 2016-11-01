@@ -10,18 +10,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.MainActivity"
-            android:label="TBR Jar">
+            android:label="TBR Jar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.EmailPasswordActivity"/>
-        <activity android:name=".Activities.FindBooksActivity"/>
-        <activity android:name=".Activities.BooksFoundActivity"/>
-        <activity android:name=".Activities.BookDetailsActivity"/>
-        <activity android:name=".Lists.TbrJarList"/>
+        <activity android:name=".Activities.EmailPasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.FindBooksActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.BooksFoundActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.BookDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Lists.TbrJarList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Lists.FavoritesList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Lists.NowReadingList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Lists.FinishedList"
+            android:screenOrientation="portrait"/>
 
     </application>
 

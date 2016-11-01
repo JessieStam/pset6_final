@@ -133,7 +133,6 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
 
             case R.id.tbr_button:
 
-                Log.d("test", "clicked item in onclick: " + clicked_item);
                 int j = 0;
                 ArrayList<BookItem> current_list = manager.getTbr_jar();
 
@@ -152,12 +151,62 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
 
                 break;
             case R.id.fav_button:
+
+                int k = 0;
+                ArrayList<BookItem> fav_list = manager.getFavorites();
+
+                for (BookItem item : fav_list) {
+                    if (item.getTitle().equals(clicked_item.getTitle())) {
+                        k = 1;
+                        Toast.makeText(this, "This book is already in this list!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (k == 0) {
+                    manager.add_to_favorites(clicked_item);
+                    Toast.makeText(this, "Added to your favorites!", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.fin_button:
+
+                int l = 0;
+                ArrayList<BookItem> fin_list = manager.getFinished();
+
+                for (BookItem item : fin_list) {
+                    if (item.getTitle().equals(clicked_item.getTitle())) {
+                        l = 1;
+                        Toast.makeText(this, "This book is already in this list!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (l == 0) {
+                    manager.add_to_finished(clicked_item);
+                    Toast.makeText(this, "Added to your finished books!", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.reading_button:
-                break;
 
+                int m = 0;
+                ArrayList<BookItem> reading_list = manager.getNowreading();
+
+                for (BookItem item : reading_list) {
+                    if (item.getTitle().equals(clicked_item.getTitle())) {
+                        m = 1;
+                        Toast.makeText(this, "This book is already in this list!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (m == 0) {
+                    manager.add_to_reading(clicked_item);
+                    Toast.makeText(this, "Added to your current reads!", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
         }
     }
 

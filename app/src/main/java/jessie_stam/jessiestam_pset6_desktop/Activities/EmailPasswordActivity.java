@@ -276,8 +276,10 @@ public class EmailPasswordActivity extends MainActivity implements View.OnClickL
             email_field.setVisibility(View.VISIBLE);
             password_field.setVisibility(View.VISIBLE);
 
-            if (confirm_pass.equals("invisible")) {
-                confirm_field.setVisibility(View.INVISIBLE);
+            if (confirm_pass != null) {
+                if (confirm_pass.equals("invisible")) {
+                    confirm_field.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }

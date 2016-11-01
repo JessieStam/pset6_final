@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import jessie_stam.jessiestam_pset6_desktop.Activities.FindBooksActivity;
+import jessie_stam.jessiestam_pset6_desktop.Activities.MainActivity;
+import jessie_stam.jessiestam_pset6_desktop.Lists.FavoritesList;
+import jessie_stam.jessiestam_pset6_desktop.Lists.FinishedList;
+import jessie_stam.jessiestam_pset6_desktop.Lists.NowReadingList;
 import jessie_stam.jessiestam_pset6_desktop.Lists.TbrJarList;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
@@ -24,41 +28,62 @@ public class MenuHelper {
         manager = BookManager.getOurInstance();
 
         int id = item.getItemId();
-        String toast = null;
+        String toast = "";
 
         switch (id) {
             case R.id.action_settings:
-                toast = "You clicked the settings button!";
+                toast = "This button is for decorative purposes only";
                 break;
             case R.id.action_lists:
-                toast = "You clicked the lists button!";
                 break;
+
             case R.id.action_account:
-                toast = "You clicked the account button!";
-
+                Intent openAccountpage = new Intent(context, MainActivity.class);
+                context.startActivity(openAccountpage);
                 break;
+
             case R.id.tbrList:
-                toast = "You clicked TBR bitch";
 
-                Intent openTBR = new Intent(context, TbrJarList.class);
-                context.startActivity(openTBR);
-                break;
+                toast = checkIfLoggedIn();
+
+                if (toast.equals("")) {
+                    Intent openTBR = new Intent(context, TbrJarList.class);
+                    context.startActivity(openTBR);
+                    break;
+                }
+
+            case R.id.favList:
+
+                if (toast.equals("")) {
+                    Intent openFavorites = new Intent(context, FavoritesList.class);
+                    context.startActivity(openFavorites);
+                    break;
+                }
+
+            case R.id.readList:
+
+                if (toast.equals("")) {
+                    Intent openFinished = new Intent(context, FinishedList.class);
+                    context.startActivity(openFinished);
+                    break;
+                }
+
+            case R.id.currentList:
+
+                if (toast.equals("")) {
+                    Intent openNowreading = new Intent (context, NowReadingList.class);
+                    context.startActivity(openNowreading);
+                    break;
+                }
 
             case R.id.action_search:
 
                 toast = checkIfLoggedIn();
                 if (toast.equals("")) {
-                    toast = "You clicked the search button!";
-
                     Intent searchBook = new Intent(context, FindBooksActivity.class);
                     context.startActivity(searchBook);
                     break;
                 }
-
-
-//                Intent searchBook = new Intent(context, FindBooksActivity.class);
-//                context.startActivity(searchBook);
-//                break;
         }
         return toast;
     }
@@ -66,7 +91,7 @@ public class MenuHelper {
     public String checkIfLoggedIn() {
 
         String user = manager.getCurrent_user();
-        String toast = null;
+        String toast = "";
 
         if (user.equals("")) {
             toast = "You have to log in first!";

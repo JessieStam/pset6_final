@@ -20,24 +20,16 @@ import jessie_stam.jessiestam_pset6_desktop.R;
 
 public class FindBooksActivity extends EmailPasswordActivity {
 
-//    CheckBox check_title;
-//    CheckBox check_isbn;
-
     EditText user_search_input;
     String user_input;
 
     private Toolbar toolbar;
     MenuHelper menu_helper;
 
-    //BookManager manager;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_findbooks);
-
-//        check_title = (CheckBox) findViewById(R.id.check_title);
-//        check_isbn = (CheckBox) findViewById(R.id.check_isbn);
 
         user_search_input = (EditText) findViewById(R.id.findBook);
 
@@ -45,10 +37,6 @@ public class FindBooksActivity extends EmailPasswordActivity {
         setSupportActionBar(toolbar);
 
         menu_helper = new MenuHelper();
-
-        //manager = BookManager.getOurInstance();
-        //manager.clearDisplayList();
-
     }
 
     @Override
@@ -71,7 +59,7 @@ public class FindBooksActivity extends EmailPasswordActivity {
 
         user_input = user_search_input.getText().toString();
 
-        if (user_input == "") {
+        if (user_input.equals("")) {
             Toast.makeText(this, "Enter a title, author or ISBN to search!", Toast.LENGTH_SHORT)
                     .show();
         }
