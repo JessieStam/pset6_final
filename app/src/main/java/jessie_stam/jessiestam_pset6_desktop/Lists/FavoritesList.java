@@ -1,6 +1,7 @@
-package jessie_stam.jessiestam_pset6_desktop.Activities;
+package jessie_stam.jessiestam_pset6_desktop.Lists;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,41 +13,46 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import jessie_stam.jessiestam_pset6_desktop.Datafetchers.BookAsyncTask;
-import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.Adapters.BooksAdapter;
+import jessie_stam.jessiestam_pset6_desktop.Helpers.BookManager;
 import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
+import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
- * Created by Jessie on 24-10-2016.
+ * Created by Jessie on 1-11-2016.
  */
 
-public class BooksFoundActivity extends FindBooksActivity {
+public class FavoritesList extends AppCompatActivity{
 
     private Toolbar toolbar;
     MenuHelper menu_helper;
 
-    RecyclerView books_found_list;
+    RecyclerView favorites_recycler;
     LinearLayoutManager manager;
     BooksAdapter adapter;
 
-    String searched_book;
     ArrayList<String> title_list;
     ArrayList<String> author_list;
     ArrayList<String> image_list;
 
+    ArrayList<BookItem> favorites_list;
+    BookManager book_manager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booksfound);
+        setContentView(R.layout.activity_favorites);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         menu_helper = new MenuHelper();
 
-        books_found_list = (RecyclerView) findViewById(R.id.booksfound_list);
+        book_manager = BookManager.getOurInstance();
+
+        favorites_recycler = (RecyclerView) findViewById(R.id.booksfound_list);
+        favorites_list = new ArrayList<>();
 
         if (savedInstanceState == null) {
             title_list = new ArrayList<>();
@@ -57,33 +63,19 @@ public class BooksFoundActivity extends FindBooksActivity {
             title_list = savedInstanceState.getStringArrayList("title_list");
             author_list = savedInstanceState.getStringArrayList("author_list");
             image_list = savedInstanceState.getStringArrayList("image_list");
-
-            searched_book = savedInstanceState.getString("searched_book");
-            Log.d("test", "searched_book from savedInstance: " + searched_book);
-        }
-
-        // get extras from FindBooksActivity
-        Bundle extras = getIntent().getExtras();
-
-        // if extras exist, update title and poster string and titles and posters lists
-        if (extras != null) {
-            searched_book = extras.getString("searched_book");
         }
 
         // use a linear layout manager on RecyclerView
         manager = new LinearLayoutManager(this);
-        books_found_list.setLayoutManager(manager);
-
-        Log.d("test", "searched book is: " + searched_book);
+        favorites_recycler.setLayoutManager(manager);
 
         // create new BooksAdapter object and set to RecyclerView
         adapter = new BooksAdapter(this, title_list, author_list, image_list);
-        books_found_list.setAdapter(adapter);
+        favorites_recycler.setAdapter(adapter);
 
-        if (searched_book != null) {
-            BookAsyncTask asyncTask = new BookAsyncTask(this);
-            asyncTask.execute(searched_book);
-        }
+        favorites_list = book_manager.getFavorites();
+        setData(favorites_list);
+        Log.d("test", "favorites is: " + favorites_list.size());
 
         adapter.notifyDataSetChanged();
     }
@@ -104,9 +96,9 @@ public class BooksFoundActivity extends FindBooksActivity {
         return super.onOptionsItemSelected(menu_item);
     }
 
-    public void setData(ArrayList<BookItem> book_list) {
+    public void setData(ArrayList<BookItem> favorites_list) {
 
-        Log.d("test", "setData, iterate over book_list");
+        Log.d("test", "setData, iterate over favorites_list");
 
         //bookitem_list = book_list;
 
@@ -114,8 +106,8 @@ public class BooksFoundActivity extends FindBooksActivity {
         author_list.clear();
         image_list.clear();
 
-        if (book_list.size() != 0) {
-            for (BookItem item : book_list){
+        if (favorites_list.size() != 0) {
+            for (BookItem item : favorites_list){
                 title_list.add(item.getTitle());
                 author_list.add(item.getAuthor());
                 image_list.add(item.getImage());
@@ -126,33 +118,9 @@ public class BooksFoundActivity extends FindBooksActivity {
             }
         }
         else {
-            Log.d("test", "book_list is empty");
+            Log.d("test", "favorites_list is empty");
         }
 
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        // save list objects
-        outState.putStringArrayList("title_list", title_list);
-        outState.putStringArrayList("author_list", author_list);
-        outState.putStringArrayList("image_list", image_list);
-
-//        outState.putString("searched_book", searched_book);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // restore list objects
-        title_list = savedInstanceState.getStringArrayList("title_list");
-        author_list = savedInstanceState.getStringArrayList("author_list");
-        image_list = savedInstanceState.getStringArrayList("image_list");
-
-//        searched_book = savedInstanceState.getString("searched_book");
     }
 }

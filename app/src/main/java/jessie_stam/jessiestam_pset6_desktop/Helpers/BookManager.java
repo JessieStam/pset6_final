@@ -85,6 +85,19 @@ public class BookManager {
         }
     }
 
+    public ArrayList<BookItem> getTbr_jar() {
+
+        String user_email = getCurrent_user();
+        ArrayList<BookItem> tbr = new ArrayList<>();
+
+        for (User user : users) {
+            if (user_email.equals(user.getEmail())) {
+                tbr = user.getTBR();
+            }
+        }
+        return tbr;
+    }
+
     public void add_to_favorites(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -96,6 +109,19 @@ public class BookManager {
                 user.setTBR(favorties);
             }
         }
+    }
+
+    public ArrayList<BookItem> getFavorites() {
+
+        String user_email = getCurrent_user();
+        ArrayList<BookItem> favorites = new ArrayList<>();
+
+        for (User user : users) {
+            if (user_email.equals(user.getEmail())) {
+                favorites = user.getFavorites();
+            }
+        }
+        return favorites;
     }
 
     public void add_to_reading(BookItem new_book) {
@@ -111,6 +137,19 @@ public class BookManager {
         }
     }
 
+    public ArrayList<BookItem> getNowreading() {
+
+        String user_email = getCurrent_user();
+        ArrayList<BookItem> now_reading = new ArrayList<>();
+
+        for (User user : users) {
+            if (user_email.equals(user.getEmail())) {
+                now_reading = user.getReading();
+            }
+        }
+        return now_reading;
+    }
+
     public void add_to_finished(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -122,6 +161,19 @@ public class BookManager {
                 user.setTBR(finished);
             }
         }
+    }
+
+    public ArrayList<BookItem> getFinished() {
+
+        String user_email = getCurrent_user();
+        ArrayList<BookItem> finished = new ArrayList<>();
+
+        for (User user : users) {
+            if (user_email.equals(user.getEmail())) {
+                finished = user.getFinished();
+            }
+        }
+        return finished;
     }
 
     /**

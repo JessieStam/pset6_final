@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import jessie_stam.jessiestam_pset6_desktop.Activities.FindBooksActivity;
+import jessie_stam.jessiestam_pset6_desktop.Lists.TbrJarList;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
@@ -38,7 +39,11 @@ public class MenuHelper {
                 break;
             case R.id.tbrList:
                 toast = "You clicked TBR bitch";
+
+                Intent openTBR = new Intent(context, TbrJarList.class);
+                context.startActivity(openTBR);
                 break;
+
             case R.id.action_search:
 
                 toast = checkIfLoggedIn();

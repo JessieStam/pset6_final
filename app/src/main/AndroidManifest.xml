@@ -21,6 +21,7 @@
         <activity android:name=".Activities.FindBooksActivity"/>
         <activity android:name=".Activities.BooksFoundActivity"/>
         <activity android:name=".Activities.BookDetailsActivity"/>
+        <activity android:name=".Lists.TbrJarList"/>
 
     </application>
 

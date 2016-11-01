@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.Helpers.BookManager;
 import jessie_stam.jessiestam_pset6_desktop.Helpers.MenuHelper;
@@ -132,8 +134,21 @@ public class BookDetailsActivity extends BooksFoundActivity implements View.OnCl
             case R.id.tbr_button:
 
                 Log.d("test", "clicked item in onclick: " + clicked_item);
-                manager.add_to_tbr(clicked_item);
-                Toast.makeText(this, "Added to your TBR Jar!", Toast.LENGTH_SHORT).show();
+                int j = 0;
+                ArrayList<BookItem> current_list = manager.getTbr_jar();
+
+                for (BookItem item : current_list) {
+                    if (item.getTitle().equals(clicked_item.getTitle())) {
+                        j = 1;
+                        Toast.makeText(this, "This book is already in this list!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if (j == 0) {
+                    manager.add_to_tbr(clicked_item);
+                    Toast.makeText(this, "Added to your TBR Jar!", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
             case R.id.fav_button:
