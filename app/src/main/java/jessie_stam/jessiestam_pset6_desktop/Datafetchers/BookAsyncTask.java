@@ -2,7 +2,6 @@ package jessie_stam.jessiestam_pset6_desktop.Datafetchers;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -139,67 +138,46 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
 
                 case XmlPullParser.END_TAG:
 
-                    // if tag is title, add to
+                    // if tag is title, add title to BookItem object
                     if (tag_name.equalsIgnoreCase("title")) {
                         if (text != null) {
                             book_item.setTitle(text);
                         }
-                        else{
-                            Log.d("test", "Text is null");
-                        }
                     }
+                    // if tag is name, add author to BookItem object
                     else if (tag_name.equalsIgnoreCase("name")) {
-
-                        Log.d("test", "tag equals name");
 
                         if (text != null) {
                             book_item.setAuthor(text);
                         }
-                        else{
-                            Log.d("test", "Text is null");
-                        }
                     }
+                    // if tag is small_image_url, add image to BookItem object
                     else if (tag_name.equalsIgnoreCase("small_image_url")) {
-
-                        Log.d("test", "tag equals small_image_url");
 
                         if (text != null) {
                             book_item.setImage(text);
                         }
-                        else{
-                            Log.d("test", "Text is null");
-                        }
                     }
+                    // if tag is original_publication_year, add year to BookItem object
                     else if (tag_name.equalsIgnoreCase("original_publication_year")) {
-
-                        Log.d("test", "tag equals original publication year");
 
                         if (text != null) {
                             book_item.setYear(text);
                         }
-                        else{
-                            Log.d("test", "Text is null");
-                        }
                     }
+                    // if tag is average_rating, add rating to BookItem object
                     else if (tag_name.equalsIgnoreCase("average_rating")) {
-
-                        Log.d("test", "tag equals average rating");
 
                         if (text != null) {
                             book_item.setRating(text);
                         }
-                        else{
-                            Log.d("test", "Text is null");
-                        }
                     }
+                    // if tag is work, add BookItem to list of BookItems
                     else if (tag_name.equalsIgnoreCase("work")) {
-
-                        Log.d("test", "tag equals work");
 
                         book_item.setSummary("No summary yet.");
 
                         manager.addBookToDisplayList(book_item);
-
                         book_list.add(book_item);
                     }
                     break;
@@ -207,30 +185,7 @@ public class BookAsyncTask extends AsyncTask<String, Integer, ArrayList<BookItem
                     break;
             }
             event_type = parser.next();
-
         }
-
-        if (book_list.size() != 0) {
-            Log.d("test", "book list is not empty");
-
-            for (BookItem item : book_list) {
-                String title = item.getTitle();
-                String author = item.getAuthor();
-                String image = item.getImage();
-                String year = item.getYear();
-                String rating = item.getRating();
-
-//                Log.d("test", "title: " + title);
-//                Log.d("test", "author: " + author);
-//                Log.d("test", "image: " + image);
-//                Log.d("test", "year: " + year);
-//                Log.d("test", "rating: " + rating);
-            }
-        }
-        else {
-            Log.d("test", "book list is empty");
-        }
-
         return book_list;
     }
 }

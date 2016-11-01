@@ -1,9 +1,13 @@
 package jessie_stam.jessiestam_pset6_desktop.Items;
 
 /**
- * Created by Jessie on 29-10-2016.
+ * TBR Jar - BookItem
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * BookItem class that stores titles, authors, images, years, ratings and summaries.
  */
-
 public class BookItem {
 
     // fields for title, author and image
@@ -13,9 +17,6 @@ public class BookItem {
     private String year;
     private String rating;
     private String summary;
-
-    // constructor
-    //public BookItem(String new_string) { title = new_string; }
 
     // methods for title
     public String getTitle() { return title; }

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +19,14 @@ import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.R;
 
 /**
- * Created by Jessie on 1-11-2016.
+ * TBR Jar - TbrJarList
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Activity that displays the books that the user has added to tbr jar. When clicked,
+ * BookDetailsActivity will be started.
  */
-
 public class TbrJarList extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -55,6 +59,7 @@ public class TbrJarList extends AppCompatActivity {
         tbr_recycler = (RecyclerView) findViewById(R.id.booksfound_list);
         tbr_list = new ArrayList<>();
 
+        // check if savedInstanceState is null, if not, load lists from onRestore
         if (savedInstanceState == null) {
             title_list = new ArrayList<>();
             author_list = new ArrayList<>();
@@ -76,7 +81,6 @@ public class TbrJarList extends AppCompatActivity {
 
         tbr_list = book_manager.getTbr_jar();
         setData(tbr_list);
-        Log.d("test", "tbr jar is: " + tbr_list.size());
 
         adapter.notifyDataSetChanged();
     }
@@ -99,30 +103,20 @@ public class TbrJarList extends AppCompatActivity {
 
     public void setData(ArrayList<BookItem> tbr_list) {
 
-        Log.d("test", "setData, iterate over tbr_list");
-
-        //bookitem_list = book_list;
-
+        // clear old data
         title_list.clear();
         author_list.clear();
         image_list.clear();
 
+        // add title, author and image for each item in list
         if (tbr_list.size() != 0) {
             for (BookItem item : tbr_list){
                 title_list.add(item.getTitle());
                 author_list.add(item.getAuthor());
                 image_list.add(item.getImage());
-
-                Log.d("test", "title: " + item.getTitle());
-                Log.d("test", "author: " + item.getAuthor());
-                Log.d("test", "image: " + item.getImage());
             }
-        }
-        else {
-            Log.d("test", "tbr_list is empty");
         }
 
         adapter.notifyDataSetChanged();
     }
-
 }

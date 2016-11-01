@@ -1,28 +1,28 @@
 package jessie_stam.jessiestam_pset6_desktop.Helpers;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import jessie_stam.jessiestam_pset6_desktop.Items.BookItem;
 import jessie_stam.jessiestam_pset6_desktop.Items.User;
 
 /**
- * Created by Jessie on 1-11-2016.
+ * TBR Jar - BooksManager
+ *
+ * Jessie Stam
+ * 10560599
+ *
+ * Singleton that manages BookItems and Lists.
  */
-
 public class BookManager {
 
     // define instance
     private static BookManager ourInstance = null;
 
     private ArrayList<User> users = new ArrayList<>();
-
     private ArrayList<BookItem> tbr_jar = new ArrayList<>();
     private ArrayList<BookItem> favorites = new ArrayList<>();
     private ArrayList<BookItem> nowreading = new ArrayList<>();
     private ArrayList<BookItem> finished = new ArrayList<>();
-
     private ArrayList<BookItem> display_list = new ArrayList<>();
 
     private String current_user = "";
@@ -37,22 +37,22 @@ public class BookManager {
     }
 
     /**
-     * Create TodoItem for list
+     * Create User and add User to users list.
      */
     public void create_user(String user_email) {
 
         int i = 0;
         current_user = user_email;
 
+        // check if user is already in list
         for (User user : users) {
             if (user_email.equals(user.getEmail())) {
                 i = 1;
-                Log.d("test", "current user in find_user: " + current_user);
             }
         }
 
+        // if not already in list, add new user to list
         if (i != 1) {
-            Log.d("test", "current user in create_user: " + current_user);
 
             User user = new User();
             user.setEmail(user_email);
@@ -66,12 +66,21 @@ public class BookManager {
         }
     }
 
+    /**
+     * Returns the current user.
+     */
     public String getCurrent_user() { return current_user; }
 
+    /**
+     * Logs the users out.
+     */
     public void logout_user() {
         current_user = "";
     }
 
+    /**
+     * Adds BookItem to the tbr list.
+     */
     public void add_to_tbr(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -85,6 +94,9 @@ public class BookManager {
         }
     }
 
+    /**
+     * Returns the tbr list of current user.
+     */
     public ArrayList<BookItem> getTbr_jar() {
 
         String user_email = getCurrent_user();
@@ -98,6 +110,9 @@ public class BookManager {
         return tbr;
     }
 
+    /**
+     * Adds BookItem to the favorites list of current user.
+     */
     public void add_to_favorites(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -111,6 +126,9 @@ public class BookManager {
         }
     }
 
+    /**
+     * Returns the favorite list for current user.
+     */
     public ArrayList<BookItem> getFavorites() {
 
         String user_email = getCurrent_user();
@@ -124,6 +142,9 @@ public class BookManager {
         return favorites;
     }
 
+    /**
+     * Adds BookItem to currently reading list of current user.
+     */
     public void add_to_reading(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -137,6 +158,9 @@ public class BookManager {
         }
     }
 
+    /**
+     * Returns the currenly reading list for current user.
+     */
     public ArrayList<BookItem> getNowreading() {
 
         String user_email = getCurrent_user();
@@ -150,6 +174,9 @@ public class BookManager {
         return now_reading;
     }
 
+    /**
+     * Adds BookItem to finished list of current user.
+     */
     public void add_to_finished(BookItem new_book) {
 
         String user_email = getCurrent_user();
@@ -163,6 +190,9 @@ public class BookManager {
         }
     }
 
+    /**
+     * Returns the finished list of current user.
+     */
     public ArrayList<BookItem> getFinished() {
 
         String user_email = getCurrent_user();
@@ -177,12 +207,11 @@ public class BookManager {
     }
 
     /**
-     * Create TodoItem for list
+     * Create BookItem.
      */
     public BookItem create_book (String title_string, String author_string, String image_string,
                                  String year_string, String rating_string) {
 
-        // create new item and set id, title and status
         BookItem book_item = new BookItem();
 
         book_item.setTitle(title_string);
@@ -192,42 +221,32 @@ public class BookManager {
         book_item.setRating(rating_string);
         book_item.setSummary("No summary yet.");
 
+        // add BookItem to display list
         addBookToDisplayList(book_item);
 
         return book_item;
     }
 
-    public void addBookToDisplayList (BookItem book_item) {
+    /**
+     * Add BookItem to displaylist.
+     */
+    public void addBookToDisplayList (BookItem book_item) { display_list.add(book_item); }
 
-        display_list.add(book_item);
-        Log.d("test", "addtodisplaylist gebruikt");
-
-        if (display_list.size() == 0) {
-            Log.d("test", "display list is empty na gebruik");
-        }
-        else {
-            Log.d("test", "display list size na gebruik: " + display_list.size());
-        }
-    }
-
-   // public ArrayList<BookItem> getDisplayList() { return display_list; }
-
+    /**
+     * Clears the displayList.
+     */
     public void clearDisplayList() { display_list.clear(); }
 
+    /**
+     * Returns the BookItem for a given title String.
+     */
     public BookItem getItemByTitle(String title) {
-
-        if (display_list.size() == 0) {
-            Log.d("test", "display list is empty");
-        }
 
         for (BookItem item : display_list) {
             if (item.getTitle().equals(title)) {
-                Log.d("test", "display list item is " + item.getTitle());
-
                 return item;
             }
         }
         return null;
     }
-
 }
